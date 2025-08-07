@@ -104,46 +104,6 @@ def fetch_and_store_data():
         do_update("reverser")
     step3()
 
-
-    #     # Step 3: Retrieve the current record for the team (if exists)
-    #     try:
-    #         response = table.get_item(Key={'TeamName': team_name, 'Timestamp': timestamp})
-    #         existing_item = response.get('Item')
-
-    #         # If an existing record is found, compare the success rates
-    #         if existing_item:
-    #             existing_success_rate = existing_item['SuccessRate']
-
-    #             # Only update if the new success rate is higher
-    #             if success_rate > existing_success_rate:
-    #                 print(f"New highest success rate for {team_name}: {success_rate} (Previous: {existing_success_rate})")
-    #                 table.put_item(
-    #                     Item={
-    #                         'TeamName': team_name,
-    #                         'Timestamp': timestamp,
-    #                         'Type': service_type,
-    #                         'AverageLatency': latency,
-    #                         'SuccessRate': success_rate
-    #                     }
-    #                 )
-    #             else:
-    #                 print(f"No update for {team_name} as the success rate is not higher.")
-    #         else:
-    #             # If no record exists for this team, insert the new data
-    #             print(f"No existing record for {team_name}. Inserting new data.")
-    #             table.put_item(
-    #                 Item={
-    #                     'TeamName': team_name,
-    #                     'Timestamp': timestamp,
-    #                     'Type': service_type,
-    #                     'AverageLatency': latency,
-    #                     'SuccessRate': success_rate
-    #                 }
-    #             )
-
-    #     except Exception as e:
-    #         print(f"Error checking or inserting data for team '{team_name}': {e}")
-
 # Schedule the script to run every 5 minutes (or adjust as needed)
 def schedule_script():
     # Schedule the task every 5 minutes
@@ -158,4 +118,3 @@ def schedule_script():
 
 if __name__ == "__main__":
     schedule_script()
-    # fetch_and_store_data()
