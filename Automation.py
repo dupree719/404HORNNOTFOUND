@@ -1,4 +1,4 @@
-import json
+viceimport json
 import boto3
 import requests
 import schedule
@@ -7,10 +7,10 @@ from datetime import datetime
 
 # DynamoDB resource
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('TeamPerformance')  # Replace with your DynamoDB table name
+table = dynamodb.Table('service-table')  # Replace with your DynamoDB table name
 
 # API URL to fetch data from
-api_url = "https://56x1fbqe8k.execute-api.us-east-1.amazonaws.com/Stage/"  # Replace with your actual API URL
+api_url = "https://uwwrudi7qc.execute-api.us-east-1.amazonaws.com/prod/"  # Replace with your actual API URL
 
 def fetch_and_store_data():
     # Step 1: Fetch data from the API
