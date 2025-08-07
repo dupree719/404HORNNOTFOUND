@@ -1,5 +1,4 @@
 import math
-import json
 import boto3
 import requests
 import schedule
@@ -43,8 +42,8 @@ team_name_dict = {
     "swapcaser": "*"
 }
 def fetch_and_store_data():
+    # Step 1: Fetch data from the API
     def step1():
-        # Step 1: Fetch data from the API
         try:
             response = requests.get(api_url)
             response.raise_for_status()  # Raise an exception for 4xx/5xx errors
@@ -53,14 +52,12 @@ def fetch_and_store_data():
             print(f"Error fetching data from API: {e}")
             return
         timestamp = datetime.utcnow().isoformat()  # Use current timestamp
-        #print("data", data)
-        #print("timestamp", timestamp)
+        print("data =", data)
+        print("timestamp", timestamp)
         return data
-    data = step1()
-    # Step 2: Process the data
-
+    
     def step2(data):
-        #print("data", data)
+        print("data ->", data)
         for team_data in data["body"]:
             #print("team_data ->",team_data)
             team_name = team_data["TeamName"]
@@ -76,7 +73,7 @@ def fetch_and_store_data():
 
         print("url_dict", url_dict)
         print("service_score_dict", service_score_dict)
-    step2(data)
+
     def step3():
         def do_update(service_name):
             endpoint = url_dict[service_name]
@@ -102,14 +99,23 @@ def fetch_and_store_data():
         do_update("leeter")
         #do_update("swapcaser")
         do_update("reverser")
-    step3()
+    # Step 1: Fetch data from the API
+    data = step1()
+    # Step 2: Find the best service instance for each service type
+    if data is None:
+        print("Data is None")
+    else:
+        step2(data)
+        # Step 3: Update the database
+        step3()
 
 # Schedule the script to run every 5 minutes (or adjust as needed)
 def schedule_script():
+    number_of_seconds = 5
     # Schedule the task every 5 minutes
-    schedule.every(5).seconds.do(fetch_and_store_data)
+    schedule.every(number_of_seconds).seconds.do(fetch_and_store_data)
 
-    print("Scheduler started. The script will fetch and store data every 5 minutes.")
+    print(f"Scheduler started. The script will fetch and store data every {number_of_seconds} seconds.")
 
     # Keep the script running to process scheduled tasks
     while True:
