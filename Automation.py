@@ -11,7 +11,7 @@ table = dynamodb.Table('service-table')  # Replace with your DynamoDB table name
 
 # API URL to fetch data from
 api_url = "https://uwwrudi7qc.execute-api.us-east-1.amazonaws.com/prod/"  # Replace with your actual API URL
-
+my_team_name = "404 HORN NOT FOUND"
 def calculate_score(latency, success_rate, team_name):
     print("latency", latency)
     print("success_rate", success_rate)
@@ -20,7 +20,7 @@ def calculate_score(latency, success_rate, team_name):
         ret = math.inf
     elif (latency == 0):
         ret = math.inf
-    elif (team_name == "404 HORN NOT FOUND"):
+    elif (team_name == my_team_name):
         ret = math.inf
     else:
         ret = latency
@@ -76,28 +76,31 @@ def fetch_and_store_data():
 
     def step3():
         def do_update(service_name):
+            print(f"Updating data for {service_name}.")
             endpoint = url_dict[service_name]
             service_type = service_name
             team_name = team_name_dict[service_name]
-            print("service name", service_name)
             print("endpoint", endpoint)
             print("service_type", service_type)
             print("team_name", team_name)
-            table.delete_item(
-                Key={
-                    'Endpoint': endpoint,
-                    'ServiceType': service_type,
-                }
-            )
-            table.put_item(
-                Item={
-                    'TeamName': team_name,
-                    'ServiceType': service_type,
-                    'Endpoint': endpoint
-                }
-            )
+            if team_name == "*":
+                print("Team not set. Not updating.")
+            else:
+                table.delete_item(
+                    Key={
+                        'Endpoint': endpoint,
+                        'ServiceType': service_type,
+                    }
+                )
+                table.put_item(
+                    Item={
+                        'TeamName': team_name,
+                        'ServiceType': service_type,
+                        'Endpoint': endpoint
+                    }
+                )
         do_update("leeter")
-        #do_update("swapcaser")
+        do_update("swapcaser")
         do_update("reverser")
     # Step 1: Fetch data from the API
     data = step1()
