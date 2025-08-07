@@ -103,7 +103,7 @@ def fetch_and_store_data():
     data = step1()
     # Step 2: Find the best service instance for each service type
     if data is None:
-        print("Data is None")
+        print("Data not found.")
     else:
         step2(data)
         # Step 3: Update the database
